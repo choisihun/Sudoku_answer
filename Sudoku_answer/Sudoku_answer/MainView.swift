@@ -31,6 +31,8 @@ struct MainView: View {
         [0, 0, 0, 0, 0, 0, 0, 0, 0]
     ]
     
+    @State private var showingAlert: Bool = false
+    
     var body: some View {
         VStack {
             ForEach(0..<9) { row in
@@ -67,7 +69,14 @@ struct MainView: View {
             
             Button("풀기") {
                 solveSudoku()
+                
             }
+            .alert("풀이 실패🚫", isPresented: $showingAlert) {
+                Button("확인") {}
+            } message: {
+                Text("스도쿠 풀이에 실패하였습니다. \n 문제를 다시 한 번 확인해 주세요")
+            }
+
             Button("리셋") {
                 sudokuBoard = firstSudokuBoard
             }
@@ -82,7 +91,7 @@ struct MainView: View {
         if solveSudokuHelper(&sudokuBoard) {
             print("성공!")
         } else {
-            print("실패!")
+            showingAlert = true
         }
     }
     
@@ -130,3 +139,4 @@ struct MainView: View {
 #Preview {
     MainView()
 }
+
